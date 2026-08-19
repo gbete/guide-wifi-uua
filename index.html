@@ -512,6 +512,110 @@
     gap: 0.3rem;
   }
 
+  /* ── Activation ── */
+  .activation {
+    margin-top: 2.5rem;
+    border-top: 2px solid var(--border);
+    padding-top: 2rem;
+  }
+  .activation h2 {
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 0.5rem;
+  }
+  .activation-intro {
+    color: var(--text-2);
+    font-size: 0.95rem;
+    margin-bottom: 1.25rem;
+  }
+  .activation-form {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.25rem 1.5rem;
+    box-shadow: var(--shadow-sm);
+  }
+  .form-group { margin-bottom: 1rem; }
+  .form-group:last-of-type { margin-bottom: 1.25rem; }
+  .form-group label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-2);
+    margin-bottom: 0.35rem;
+  }
+  .form-group input {
+    width: 100%;
+    padding: 0.6rem 0.8rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    font: inherit;
+    font-size: 0.95rem;
+    background: var(--bg);
+    color: var(--text);
+  }
+  .form-group input:focus {
+    outline: 2px solid var(--accent);
+    border-color: transparent;
+  }
+  .act-btn {
+    width: 100%;
+    padding: 0.7rem;
+    border: none;
+    border-radius: var(--radius-sm);
+    background: var(--accent);
+    color: var(--accent-on);
+    font: inherit;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: opacity 0.15s;
+  }
+  .act-btn:hover { opacity: 0.9; }
+  .act-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .act-btn:disabled { opacity: 0.5; cursor: wait; }
+  .act-result {
+    margin-top: 1rem;
+    padding: 1rem;
+    border-radius: var(--radius-sm);
+    display: none;
+    font-size: 0.92rem;
+  }
+  .act-result.ok {
+    display: block;
+    background: var(--success-soft);
+    color: var(--success);
+  }
+  .act-result.err {
+    display: block;
+    background: var(--error-soft);
+    color: var(--error);
+  }
+  .act-creds {
+    margin-top: 0.75rem;
+    background: var(--bg);
+    border-radius: 6px;
+    padding: 0.75rem;
+    font-size: 0.95rem;
+  }
+  .act-creds .cred-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.35rem 0;
+  }
+  .act-creds .cred-label { color: var(--text-2); }
+  .act-creds .cred-value {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    color: var(--accent);
+    font-size: 1.05rem;
+  }
+
   /* ── Footer ── */
   .footer {
     text-align: center;
@@ -965,6 +1069,24 @@
     </div>
   </section>
 
+  <!-- ═══ Activation ═══ -->
+  <section class="activation" id="activation">
+    <h2>Activer votre compte</h2>
+    <p class="activation-intro">Votre compte doit être activé avant la première connexion. Renseignez votre <strong>matricule</strong> et le <strong>numéro de téléphone de votre parent</strong> (fourni lors de l'inscription).</p>
+    <form id="activation-form" class="activation-form">
+      <div class="form-group">
+        <label for="act-mat">Matricule</label>
+        <input type="text" id="act-mat" placeholder="2024-UUA-DT4020-FDCV" required>
+      </div>
+      <div class="form-group">
+        <label for="act-tel">N° de téléphone du parent</label>
+        <input type="text" id="act-tel" placeholder="90123456" required>
+      </div>
+      <button type="submit" id="act-btn" class="act-btn">Activer mon compte</button>
+    </form>
+    <div id="act-result" class="act-result"></div>
+  </section>
+
   <footer class="footer">
     <p>Université — Service informatique</p>
   </footer>
@@ -1000,5 +1122,51 @@
         q.setAttribute('aria-expanded', 'true');
       }
     });
+  });
+
+  // Activation self-service
+  // URL du serveur d'activation (adapter si le dashboard est exposé sur une autre adresse)
+  const ACTIVATE_API = 'http://172.16.0.54:8099/api/activate';
+
+  document.getElementById('activation-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const btn = document.getElementById('act-btn');
+    const res = document.getElementById('act-result');
+    btn.disabled = true;
+    btn.textContent = 'Vérification…';
+    res.className = 'act-result';
+    res.style.display = 'none';
+
+    try {
+      const r = await fetch(ACTIVATE_API, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          matricule: document.getElementById('act-mat').value,
+          phone: document.getElementById('act-tel').value,
+        }),
+      });
+      const d = await r.json();
+      if (d.success) {
+        res.className = 'act-result ok';
+        res.innerHTML =
+          '<strong>✅ Compte activé avec succès !</strong>' +
+          '<div class="act-creds">' +
+            '<div class="cred-row"><span class="cred-label">Identifiant Wi-Fi</span>' +
+            '<span class="cred-value">' + d.username + '</span></div>' +
+            '<div class="cred-row"><span class="cred-label">Mot de passe</span>' +
+            '<span class="cred-value">' + d.password + '</span></div>' +
+          '</div>' +
+          '<p style="margin-top:.75rem;font-size:.85rem;color:var(--text-2)">Notez bien ces informations, puis suivez le guide ci-dessus pour vous connecter au réseau <strong>UUA</strong>.</p>';
+      } else {
+        res.className = 'act-result err';
+        res.innerHTML = '<strong>' + d.error + '</strong>';
+      }
+    } catch (ex) {
+      res.className = 'act-result err';
+      res.innerHTML = '<strong>Impossible de joindre le serveur d\'activation. Vérifiez que vous êtes connecté au réseau de l\'université (filaire ou salle informatique).</strong>';
+    }
+    btn.disabled = false;
+    btn.textContent = 'Activer mon compte';
   });
 </script>
