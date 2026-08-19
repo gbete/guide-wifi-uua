@@ -1073,18 +1073,14 @@
   <section class="activation" id="activation">
     <h2>Activer votre compte</h2>
     <p class="activation-intro">Avant votre première connexion, activez votre compte en renseignant votre <strong>matricule</strong> et le <strong>numéro de téléphone de votre parent</strong> (fourni lors de l'inscription).</p>
-    <form id="activation-form" class="activation-form">
-      <div class="form-group">
-        <label for="act-mat">Matricule</label>
-        <input type="text" id="act-mat" placeholder="2024-UUA-DT4020-FDCV" required>
-      </div>
-      <div class="form-group">
-        <label for="act-tel">N° de téléphone du parent</label>
-        <input type="text" id="act-tel" placeholder="90123456" required inputmode="tel">
-      </div>
-      <button type="submit" id="act-btn" class="act-btn">Activer mon compte</button>
-    </form>
-    <div id="act-result" class="act-result"></div>
+    <iframe
+      src="https://script.google.com/macros/s/AKfycbzOJTZn_Aez1nbZbAb_DNTxpU4GQbYi8D7-ZTjaAMy-h9pOdfFvy-scocYKmBhkO70i/exec"
+      style="width:100%;min-height:480px;border:1px solid var(--border);border-radius:var(--radius);background:var(--surface)"
+      frameborder="0"
+      scrolling="auto"
+      loading="lazy"
+      title="Formulaire d'activation WiFi UUA"
+    ></iframe>
   </section>
 
   <footer class="footer">
@@ -1124,65 +1120,5 @@
     });
   });
 
-  // Activation self-service via Google Apps Script
-  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzOJTZn_Aez1nbZbAb_DNTxpU4GQbYi8D7-ZTjaAMy-h9pOdfFvy-scocYKmBhkO70i/exec';
-
-  document.getElementById('activation-form').addEventListener('submit', async function(e) {
-    e.preventDefault();
-    const btn = document.getElementById('act-btn');
-    const res = document.getElementById('act-result');
-    const mat = document.getElementById('act-mat').value.trim();
-    const tel = document.getElementById('act-tel').value.trim();
-
-    if (!mat || !tel) return;
-
-    btn.disabled = true;
-    btn.textContent = 'Vérification…';
-    res.className = 'act-result';
-    res.style.display = 'none';
-
-    try {
-      const url = APPS_SCRIPT_URL
-        + '?action=activate'
-        + '&matricule=' + encodeURIComponent(mat)
-        + '&phone=' + encodeURIComponent(tel);
-
-      const r = await fetch(url);
-      const d = await r.json();
-
-      if (d.success) {
-        const emailNote = d.already ? ''
-          : d.emailSent
-            ? '<br>📧 Un e-mail avec vos identifiants a été envoyé à <strong>' + d.username + '@ucaouua.net</strong>'
-            : '<br>⚠️ L\'e-mail n\'a pas pu être envoyé. Notez bien vos identifiants.';
-
-        res.className = 'act-result ok';
-        res.style.display = 'block';
-        res.innerHTML =
-          '<strong>' + (d.already ? 'ℹ️ Ce compte est déjà activé.' : '✅ Compte activé avec succès !') + '</strong>' +
-          '<div class="act-creds">' +
-            '<div class="cred-row"><span class="cred-label">Identifiant Wi-Fi</span>' +
-            '<span class="cred-value">' + d.username + '</span></div>' +
-            '<div class="cred-row"><span class="cred-label">Mot de passe</span>' +
-            '<span class="cred-value">' + d.password + '</span></div>' +
-          '</div>' +
-          '<p style="margin-top:.75rem;font-size:.85rem;color:var(--text-2)">' +
-          'Notez bien ces informations, puis suivez le guide ci-dessus pour vous connecter au réseau <strong>UUA</strong>.' +
-          (d.already ? '' : '<br>⏱️ Votre compte sera opérationnel dans <strong>quelques minutes</strong>.') +
-          emailNote +
-          '</p>';
-      } else {
-        res.className = 'act-result err';
-        res.style.display = 'block';
-        res.innerHTML = '<strong>' + d.error + '</strong>';
-      }
-    } catch (ex) {
-      res.className = 'act-result err';
-      res.style.display = 'block';
-      res.innerHTML = '<strong>Erreur de connexion. Vérifiez votre accès Internet et réessayez.</strong>';
-    }
-
-    btn.disabled = false;
-    btn.textContent = 'Activer mon compte';
-  });
+  // Activation : formulaire chargé via iframe Apps Script (évite les problèmes CORS).
 </script>
