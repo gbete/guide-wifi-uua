@@ -1072,27 +1072,19 @@
   <!-- ═══ Activation ═══ -->
   <section class="activation" id="activation">
     <h2>Activer votre compte</h2>
-    <p class="activation-intro">Avant votre première connexion, vous devez <strong>activer votre compte</strong>. Vous aurez besoin de :</p>
-    <div class="activation-form" style="padding:1rem 1.5rem">
-      <div class="steps" style="padding-left:2rem">
-        <div class="step" style="padding-bottom:1rem">
-          <div class="step-num" style="left:-2rem;width:1.6rem;height:1.6rem;font-size:.75rem">1</div>
-          <div class="step-body"><p style="line-height:1.6rem">Votre <strong>matricule</strong> (ex : 2024-UUA-DT4020-FDCV)</p></div>
-        </div>
-        <div class="step" style="padding-bottom:1rem">
-          <div class="step-num" style="left:-2rem;width:1.6rem;height:1.6rem;font-size:.75rem">2</div>
-          <div class="step-body"><p style="line-height:1.6rem">Le <strong>n° de téléphone de votre parent</strong> (fourni à l'inscription)</p></div>
-        </div>
-        <div class="step" style="padding-bottom:0">
-          <div class="step-num" style="left:-2rem;width:1.6rem;height:1.6rem;font-size:.75rem">3</div>
-          <div class="step-body"><p style="line-height:1.6rem">Vos identifiants vous seront affichés <strong>et envoyés par e-mail</strong></p></div>
-        </div>
+    <p class="activation-intro">Avant votre première connexion, activez votre compte en renseignant votre <strong>matricule</strong> et le <strong>numéro de téléphone de votre parent</strong> (fourni lors de l'inscription).</p>
+    <form id="activation-form" class="activation-form">
+      <div class="form-group">
+        <label for="act-mat">Matricule</label>
+        <input type="text" id="act-mat" placeholder="2024-UUA-DT4020-FDCV" required>
       </div>
-    </div>
-    <div class="callout info" style="margin-top:1rem">
-      <span class="callout-icon">💡</span>
-      <span>Le formulaire d'activation se trouve juste en dessous de ce guide. Faites défiler la page pour y accéder.</span>
-    </div>
+      <div class="form-group">
+        <label for="act-tel">N° de téléphone du parent</label>
+        <input type="text" id="act-tel" placeholder="90123456" required inputmode="tel">
+      </div>
+      <button type="submit" id="act-btn" class="act-btn">Activer mon compte</button>
+    </form>
+    <div id="act-result" class="act-result"></div>
   </section>
 
   <footer class="footer">
@@ -1132,5 +1124,62 @@
     });
   });
 
-  // Activation : le formulaire est désormais hébergé sur Google Sites (Apps Script).
+  // Activation self-service via Google Apps Script
+  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzOJTZn_Aez1nbZbAb_DNTxpU4GQbYi8D7-ZTjaAMy-h9pOdfFvy-scocYKmBhkO70i/exec';
+
+  document.getElementById('activation-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const btn = document.getElementById('act-btn');
+    const res = document.getElementById('act-result');
+    const mat = document.getElementById('act-mat').value.trim();
+    const tel = document.getElementById('act-tel').value.trim();
+
+    if (!mat || !tel) return;
+
+    btn.disabled = true;
+    btn.textContent = 'Vérification…';
+    res.className = 'act-result';
+    res.style.display = 'none';
+
+    try {
+      const url = APPS_SCRIPT_URL
+        + '?action=activate'
+        + '&matricule=' + encodeURIComponent(mat)
+        + '&phone=' + encodeURIComponent(tel);
+
+      const r = await fetch(url);
+      const d = await r.json();
+
+      if (d.success) {
+        const emailNote = d.already ? ''
+          : d.emailSent
+            ? '<br>📧 Un e-mail avec vos identifiants a été envoyé à <strong>' + d.username + '@ucaouua.net</strong>'
+            : '<br>⚠️ L\'e-mail n\'a pas pu être envoyé. Notez bien vos identifiants.';
+
+        res.className = 'act-result ok';
+        res.innerHTML =
+          '<strong>' + (d.already ? 'ℹ️ Ce compte est déjà activé.' : '✅ Compte activé avec succès !') + '</strong>' +
+          '<div class="act-creds">' +
+            '<div class="cred-row"><span class="cred-label">Identifiant Wi-Fi</span>' +
+            '<span class="cred-value">' + d.username + '</span></div>' +
+            '<div class="cred-row"><span class="cred-label">Mot de passe</span>' +
+            '<span class="cred-value">' + d.password + '</span></div>' +
+          '</div>' +
+          '<p style="margin-top:.75rem;font-size:.85rem;color:var(--text-2)">' +
+          'Notez bien ces informations, puis suivez le guide ci-dessus pour vous connecter au réseau <strong>UUA</strong>.' +
+          (d.already ? '' : '<br>⏱️ Votre compte sera opérationnel dans <strong>quelques minutes</strong>.') +
+          emailNote +
+          '</p>';
+      } else {
+        res.className = 'act-result err';
+        res.innerHTML = '<strong>' + d.error + '</strong>';
+      }
+    } catch (ex) {
+      res.className = 'act-result err';
+      res.innerHTML = '<strong>Erreur de connexion. Vérifiez votre accès Internet et réessayez.</strong>';
+    }
+
+    btn.disabled = false;
+    btn.textContent = 'Activer mon compte';
+  });
 </script>
