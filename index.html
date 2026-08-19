@@ -1,0 +1,988 @@
+<title>Guide WiFi UUA</title>
+<style>
+  :root {
+    --bg: #F5F7FA;
+    --surface: #FFFFFF;
+    --text: #1A2035;
+    --text-2: #5A6478;
+    --text-3: #8A92A2;
+    --accent: #0C8C7F;
+    --accent-bright: #10B9A8;
+    --accent-soft: #E0F5F2;
+    --accent-on: #FFFFFF;
+    --navy: #152042;
+    --navy-soft: #E4EAF4;
+    --border: #DEE3ED;
+    --step-line: #D0D7E3;
+    --success: #0A8754;
+    --success-soft: #DDFAED;
+    --warning: #C07A15;
+    --warning-soft: #FFF3DC;
+    --error-soft: #FFE5E5;
+    --error: #C0392B;
+    --mockup-bg: #EDF1F7;
+    --mockup-bar: #2A3250;
+    --mockup-glow: rgba(12,140,127,0.12);
+    --tab-hover: #EDF1F7;
+    --radius: 14px;
+    --radius-sm: 8px;
+    --shadow-sm: 0 1px 2px rgba(26,32,53,0.06);
+    --shadow: 0 2px 8px rgba(26,32,53,0.07);
+    --shadow-lg: 0 8px 24px rgba(26,32,53,0.08);
+    --font-body: "Segoe UI", system-ui, -apple-system, sans-serif;
+    --font-display: Georgia, "Times New Roman", serif;
+    --font-mono: "SF Mono", "Cascadia Code", "Fira Code", monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0D1117;
+      --surface: #161B26;
+      --text: #E1E6EF;
+      --text-2: #8B95A8;
+      --text-3: #5E6A7E;
+      --accent: #36D6C5;
+      --accent-bright: #5EEADB;
+      --accent-soft: #0C2D29;
+      --accent-on: #042420;
+      --navy: #A4BDE8;
+      --navy-soft: #1A2540;
+      --border: #252D3D;
+      --step-line: #252D3D;
+      --success: #3DE8A0;
+      --success-soft: #0A2E1C;
+      --warning: #F5C34A;
+      --warning-soft: #2A2000;
+      --error-soft: #3A1515;
+      --error: #E8574A;
+      --mockup-bg: #111822;
+      --mockup-bar: #080C14;
+      --mockup-glow: rgba(54,214,197,0.08);
+      --tab-hover: #1C2333;
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.2);
+      --shadow: 0 2px 8px rgba(0,0,0,0.25);
+      --shadow-lg: 0 8px 24px rgba(0,0,0,0.3);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0D1117;
+    --surface: #161B26;
+    --text: #E1E6EF;
+    --text-2: #8B95A8;
+    --text-3: #5E6A7E;
+    --accent: #36D6C5;
+    --accent-bright: #5EEADB;
+    --accent-soft: #0C2D29;
+    --accent-on: #042420;
+    --navy: #A4BDE8;
+    --navy-soft: #1A2540;
+    --border: #252D3D;
+    --step-line: #252D3D;
+    --success: #3DE8A0;
+    --success-soft: #0A2E1C;
+    --warning: #F5C34A;
+    --warning-soft: #2A2000;
+    --error-soft: #3A1515;
+    --error: #E8574A;
+    --mockup-bg: #111822;
+    --mockup-bar: #080C14;
+    --mockup-glow: rgba(54,214,197,0.08);
+    --tab-hover: #1C2333;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.2);
+    --shadow: 0 2px 8px rgba(0,0,0,0.25);
+    --shadow-lg: 0 8px 24px rgba(0,0,0,0.3);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: var(--font-body);
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  .page {
+    max-width: 660px;
+    margin: 0 auto;
+    padding: 2.5rem 1.25rem 4rem;
+  }
+
+  /* ── Hero ── */
+  .hero {
+    text-align: center;
+    padding: 2rem 0 2.5rem;
+  }
+  .wifi-icon {
+    display: inline-block;
+    margin-bottom: 1.25rem;
+  }
+  .wifi-icon svg {
+    width: 72px;
+    height: 72px;
+    color: var(--accent);
+  }
+  @keyframes arc-in {
+    from { opacity: 0; transform: scale(0.7); }
+    to { opacity: var(--arc-o, 1); transform: scale(1); }
+  }
+  .wifi-icon .arc {
+    transform-origin: center 85%;
+    animation: arc-in 0.6s ease-out backwards;
+  }
+  .wifi-icon .arc-1 { animation-delay: 0.1s; --arc-o: 1; }
+  .wifi-icon .arc-2 { animation-delay: 0.25s; --arc-o: 0.7; }
+  .wifi-icon .arc-3 { animation-delay: 0.4s; --arc-o: 0.4; }
+  @media (prefers-reduced-motion: reduce) {
+    .wifi-icon .arc { animation: none; }
+  }
+  .hero h1 {
+    font-family: var(--font-display);
+    font-size: clamp(1.75rem, 4vw, 2.25rem);
+    font-weight: 700;
+    color: var(--navy);
+    line-height: 1.2;
+    text-wrap: balance;
+    margin-bottom: 0.5rem;
+  }
+  .hero .subtitle {
+    font-size: 1.05rem;
+    color: var(--text-2);
+  }
+  .hero .network-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1.25rem;
+    padding: 0.55rem 1.2rem;
+    background: var(--accent-soft);
+    color: var(--accent);
+    border-radius: 100px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    letter-spacing: 0.03em;
+  }
+  .hero .network-badge svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  /* ── Prerequisites ── */
+  .prereqs {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 2rem;
+    box-shadow: var(--shadow-sm);
+  }
+  .prereqs h2 {
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    margin-bottom: 0.75rem;
+  }
+  .prereqs p {
+    color: var(--text-2);
+    font-size: 0.95rem;
+    margin-bottom: 0.5rem;
+  }
+  .prereqs p:last-child { margin-bottom: 0; }
+  .prereqs strong { color: var(--text); }
+
+  /* ── Platform tabs ── */
+  .tabs {
+    display: flex;
+    gap: 4px;
+    border-bottom: 2px solid var(--border);
+    margin-bottom: 1.75rem;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tab-btn {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.7rem 1rem;
+    border: none;
+    background: none;
+    font: inherit;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text-2);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -2px;
+    transition: color 0.15s, border-color 0.15s, background 0.15s;
+    border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+    white-space: nowrap;
+  }
+  .tab-btn:hover { color: var(--text); background: var(--tab-hover); }
+  .tab-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+  .tab-btn.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+    font-weight: 600;
+  }
+  .tab-btn .tab-icon {
+    font-size: 1.1rem;
+    line-height: 1;
+  }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  /* ── Steps ── */
+  .steps {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    position: relative;
+    padding-left: 2.5rem;
+  }
+  .step {
+    position: relative;
+    padding-bottom: 1.75rem;
+    border-left: 2px solid var(--step-line);
+    padding-left: 1.5rem;
+  }
+  .step:last-child {
+    border-left-color: transparent;
+    padding-bottom: 0;
+  }
+  .step-num {
+    position: absolute;
+    left: -2.5rem;
+    top: 0;
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--accent);
+    color: var(--accent-on);
+    border-radius: 50%;
+    font-size: 0.85rem;
+    font-weight: 700;
+    z-index: 1;
+  }
+  .step:last-child .step-num {
+    background: var(--success);
+  }
+  .step h3 {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 0.35rem;
+    line-height: 2rem;
+  }
+  .step p {
+    font-size: 0.95rem;
+    color: var(--text-2);
+    margin-bottom: 0.5rem;
+  }
+  .step p:last-child { margin-bottom: 0; }
+  .step strong { color: var(--text); font-weight: 600; }
+
+  /* ── Visual aids (mini mockups) ── */
+  .visual-aid {
+    margin-top: 0.75rem;
+    background: var(--mockup-bg);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+  }
+
+  /* WiFi list mockup */
+  .wifi-list { padding: 0.5rem 0; }
+  .wifi-list-item {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.6rem 0.9rem;
+    font-size: 0.88rem;
+    color: var(--text-2);
+    border-bottom: 1px solid var(--border);
+  }
+  .wifi-list-item:last-child { border-bottom: none; }
+  .wifi-list-item.highlight {
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-weight: 600;
+    position: relative;
+  }
+  .wifi-list-item.highlight::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: var(--accent);
+    border-radius: 0 2px 2px 0;
+  }
+  .wifi-list-item .item-icon {
+    font-size: 0.75rem;
+    opacity: 0.5;
+  }
+  .wifi-list-item.highlight .item-icon { opacity: 1; }
+  .wifi-list-item .lock {
+    margin-left: auto;
+    font-size: 0.7rem;
+    opacity: 0.4;
+  }
+  .wifi-list-item.highlight .lock { opacity: 0.8; }
+
+  /* Form mockup */
+  .form-mock {
+    padding: 0.9rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  .form-mock label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-3);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .form-mock .field {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.5rem 0.7rem;
+    font-size: 0.85rem;
+    color: var(--text-2);
+    font-family: var(--font-mono);
+  }
+  .form-mock .field.filled {
+    color: var(--text);
+  }
+  .form-mock .btn-mock {
+    margin-top: 0.25rem;
+    padding: 0.5rem 1rem;
+    background: var(--accent);
+    color: var(--accent-on);
+    border-radius: 6px;
+    text-align: center;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  /* Android config */
+  .config-table {
+    width: 100%;
+    font-size: 0.85rem;
+    border-collapse: collapse;
+  }
+  .config-table td {
+    padding: 0.45rem 0.7rem;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  .config-table tr:last-child td { border-bottom: none; }
+  .config-table td:first-child {
+    font-weight: 600;
+    color: var(--text);
+    white-space: nowrap;
+    width: 45%;
+  }
+  .config-table td:last-child {
+    color: var(--accent);
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+  }
+
+  /* Certificate dialog */
+  .cert-dialog {
+    padding: 0.9rem;
+    text-align: center;
+  }
+  .cert-dialog .cert-icon {
+    font-size: 1.8rem;
+    margin-bottom: 0.4rem;
+  }
+  .cert-dialog .cert-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 0.25rem;
+  }
+  .cert-dialog .cert-text {
+    font-size: 0.8rem;
+    color: var(--text-2);
+    margin-bottom: 0.6rem;
+  }
+  .cert-dialog .cert-actions {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+  }
+  .cert-dialog .cert-btn {
+    padding: 0.4rem 1rem;
+    border-radius: 6px;
+    font-size: 0.82rem;
+    font-weight: 600;
+  }
+  .cert-btn.primary { background: var(--accent); color: var(--accent-on); }
+  .cert-btn.secondary { background: var(--mockup-bg); color: var(--text-2); border: 1px solid var(--border); }
+
+  /* ── Info callout ── */
+  .callout {
+    display: flex;
+    gap: 0.65rem;
+    padding: 0.75rem 0.9rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.88rem;
+    color: var(--text-2);
+    margin-top: 0.6rem;
+  }
+  .callout.info {
+    background: var(--accent-soft);
+    color: var(--accent);
+  }
+  .callout.warn {
+    background: var(--warning-soft);
+    color: var(--warning);
+  }
+  .callout .callout-icon { flex-shrink: 0; font-size: 1rem; }
+
+  /* ── Troubleshooting ── */
+  .troubleshooting {
+    margin-top: 2.5rem;
+    border-top: 2px solid var(--border);
+    padding-top: 2rem;
+  }
+  .troubleshooting h2 {
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 1rem;
+  }
+  .faq-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    margin-bottom: 0.6rem;
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+  }
+  .faq-q {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    width: 100%;
+    border: none;
+    background: none;
+    font: inherit;
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--text);
+    padding: 0.85rem 1rem;
+    cursor: pointer;
+    text-align: left;
+  }
+  .faq-q:hover { background: var(--tab-hover); }
+  .faq-q:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+  .faq-q .faq-icon {
+    margin-left: auto;
+    font-size: 0.75rem;
+    color: var(--text-3);
+    transition: transform 0.2s;
+    flex-shrink: 0;
+  }
+  .faq-item.open .faq-icon { transform: rotate(90deg); }
+  .faq-a {
+    display: none;
+    padding: 0 1rem 0.85rem 1rem;
+    font-size: 0.9rem;
+    color: var(--text-2);
+    line-height: 1.6;
+  }
+  .faq-item.open .faq-a { display: block; }
+  .faq-a ul {
+    margin: 0.4rem 0 0 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  /* ── Footer ── */
+  .footer {
+    text-align: center;
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    color: var(--text-3);
+    font-size: 0.82rem;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 500px) {
+    .page { padding: 1.5rem 1rem 3rem; }
+    .steps { padding-left: 2.25rem; }
+    .step { padding-left: 1.25rem; }
+    .step-num { left: -2.25rem; width: 1.75rem; height: 1.75rem; font-size: 0.8rem; }
+    .step h3 { line-height: 1.75rem; font-size: 1rem; }
+    .tab-btn { padding: 0.6rem 0.75rem; font-size: 0.82rem; }
+    .config-table td:first-child { width: 40%; }
+  }
+
+  /* ── Print ── */
+  @media print {
+    body { background: #fff; color: #000; }
+    .page { max-width: none; padding: 1cm; }
+    .tabs { display: none; }
+    .tab-content { display: block !important; page-break-inside: avoid; margin-bottom: 2rem; }
+    .tab-content::before {
+      content: attr(data-platform);
+      display: block;
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      border-bottom: 2px solid #000;
+      padding-bottom: 0.25rem;
+    }
+    .faq-a { display: block !important; }
+    .faq-icon { display: none; }
+    .visual-aid { break-inside: avoid; }
+  }
+</style>
+
+<div class="page">
+
+  <!-- ═══ Hero ═══ -->
+  <header class="hero">
+    <div class="wifi-icon">
+      <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="40" cy="64" r="5" fill="currentColor"/>
+        <path class="arc arc-1" d="M28 52a17 17 0 0 1 24 0" stroke="currentColor" stroke-width="5" stroke-linecap="round"/>
+        <path class="arc arc-2" d="M17 40a33 33 0 0 1 46 0" stroke="currentColor" stroke-width="5" stroke-linecap="round" opacity="0.7"/>
+        <path class="arc arc-3" d="M6 28a48 48 0 0 1 68 0" stroke="currentColor" stroke-width="5" stroke-linecap="round" opacity="0.4"/>
+      </svg>
+    </div>
+    <h1>Se connecter au WiFi UUA</h1>
+    <p class="subtitle">Guide pas à pas pour étudiants et personnel</p>
+    <div class="network-badge">
+      <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 12a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3ZM5.3 8.7a3.8 3.8 0 0 1 5.4 0 .75.75 0 0 0 1.06-1.06 5.3 5.3 0 0 0-7.52 0A.75.75 0 0 0 5.3 8.7ZM2.8 6.2a7.6 7.6 0 0 1 10.4 0 .75.75 0 1 0 1-1.08 9.1 9.1 0 0 0-12.4 0 .75.75 0 1 0 1 1.08Z"/></svg>
+      Réseau : UUA
+    </div>
+  </header>
+
+  <!-- ═══ Prerequisites ═══ -->
+  <section class="prereqs">
+    <h2>Avant de commencer</h2>
+    <p>Munissez-vous de votre <strong>identifiant</strong> (matricule) et du <strong>mot de passe</strong> fournis par l'administration.</p>
+    <p>La connexion est <strong>personnelle</strong> — ne partagez jamais vos identifiants.</p>
+  </section>
+
+  <!-- ═══ Platform tabs ═══ -->
+  <nav class="tabs" role="tablist">
+    <button class="tab-btn active" role="tab" aria-selected="true" data-tab="ios">
+      <span class="tab-icon">📱</span> iPhone / iPad
+    </button>
+    <button class="tab-btn" role="tab" aria-selected="false" data-tab="android">
+      <span class="tab-icon">🤖</span> Android
+    </button>
+    <button class="tab-btn" role="tab" aria-selected="false" data-tab="windows">
+      <span class="tab-icon">💻</span> Windows
+    </button>
+    <button class="tab-btn" role="tab" aria-selected="false" data-tab="mac">
+      <span class="tab-icon">🍎</span> Mac
+    </button>
+  </nav>
+
+  <!-- ═══ iOS ═══ -->
+  <section class="tab-content active" id="ios" data-platform="iPhone / iPad" role="tabpanel">
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <h3>Ouvrir les réglages Wi-Fi</h3>
+          <p>Sur l'écran d'accueil, ouvrez <strong>Réglages</strong>, puis appuyez sur <strong>Wi-Fi</strong>. Vérifiez que le Wi-Fi est bien <strong>activé</strong> (curseur vert).</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <h3>Sélectionner le réseau UUA</h3>
+          <p>Dans la liste des réseaux, repérez et appuyez sur <strong>UUA</strong>.</p>
+          <div class="visual-aid">
+            <div class="wifi-list">
+              <div class="wifi-list-item">
+                <span class="item-icon">📶</span> Freebox_4A2B
+                <span class="lock">🔒</span>
+              </div>
+              <div class="wifi-list-item highlight">
+                <span class="item-icon">📶</span> UUA
+                <span class="lock">🔒</span>
+              </div>
+              <div class="wifi-list-item">
+                <span class="item-icon">📶</span> INVITÉ
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <h3>Entrer vos identifiants</h3>
+          <p>Saisissez votre <strong>identifiant</strong> (matricule) et votre <strong>mot de passe</strong>, puis appuyez sur <strong>Rejoindre</strong>.</p>
+          <div class="visual-aid">
+            <div class="form-mock">
+              <label>Nom d'utilisateur</label>
+              <div class="field filled">jean.dupont</div>
+              <label>Mot de passe</label>
+              <div class="field filled">••••••••</div>
+              <div class="btn-mock">Rejoindre</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <h3>Accepter le certificat</h3>
+          <p>Un message <strong>« Certificat non approuvé »</strong> s'affiche. Appuyez sur <strong>Se fier</strong> en haut à droite. C'est normal — ce certificat identifie le serveur Wi-Fi de l'université.</p>
+          <div class="visual-aid">
+            <div class="cert-dialog">
+              <div class="cert-icon">🛡️</div>
+              <div class="cert-title">Certificat non approuvé</div>
+              <div class="cert-text">Le serveur « radius.uua » présente un certificat.</div>
+              <div class="cert-actions">
+                <span class="cert-btn secondary">Annuler</span>
+                <span class="cert-btn primary">Se fier</span>
+              </div>
+            </div>
+          </div>
+          <div class="callout info">
+            <span class="callout-icon">ℹ️</span>
+            <span>Ce message n'apparaît qu'à la première connexion.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">✓</div>
+        <div class="step-body">
+          <h3>Connecté !</h3>
+          <p>Une coche bleue apparaît à côté de <strong>UUA</strong>. Votre appareil se reconnectera automatiquement à l'avenir.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ Android ═══ -->
+  <section class="tab-content" id="android" data-platform="Android" role="tabpanel">
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <h3>Ouvrir les paramètres Wi-Fi</h3>
+          <p>Ouvrez <strong>Paramètres</strong> → <strong>Wi-Fi</strong> (ou <strong>Connexions</strong> → <strong>Wi-Fi</strong> selon votre téléphone).</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <h3>Sélectionner UUA</h3>
+          <p>Appuyez sur <strong>UUA</strong> dans la liste des réseaux disponibles.</p>
+          <div class="visual-aid">
+            <div class="wifi-list">
+              <div class="wifi-list-item">
+                <span class="item-icon">📶</span> LiveBox-A3F9
+                <span class="lock">🔒</span>
+              </div>
+              <div class="wifi-list-item highlight">
+                <span class="item-icon">📶</span> UUA
+                <span class="lock">🔒</span>
+              </div>
+              <div class="wifi-list-item">
+                <span class="item-icon">📶</span> Hotspot_Mobile
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <h3>Configurer la connexion</h3>
+          <p>Android demande plusieurs paramètres. Remplissez <strong>exactement</strong> comme ci-dessous :</p>
+          <div class="visual-aid">
+            <table class="config-table">
+              <tr><td>Méthode EAP</td><td>PEAP</td></tr>
+              <tr><td>Phase 2</td><td>MSCHAPV2</td></tr>
+              <tr><td>Certificat CA</td><td>Ne pas valider</td></tr>
+              <tr><td>Identité</td><td>votre matricule</td></tr>
+              <tr><td>Mot de passe</td><td>votre mot de passe</td></tr>
+            </table>
+          </div>
+          <div class="callout warn">
+            <span class="callout-icon">⚠️</span>
+            <span>Laissez le champ <strong>Identité anonyme</strong> et <strong>Domaine</strong> vides. Ne changez pas les autres paramètres.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <h3>Se connecter</h3>
+          <p>Appuyez sur <strong>Se connecter</strong>. Si un avertissement sur le certificat CA apparaît, confirmez.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">✓</div>
+        <div class="step-body">
+          <h3>Connecté !</h3>
+          <p>L'icône Wi-Fi apparaît dans la barre de notification. La connexion sera mémorisée automatiquement.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ Windows ═══ -->
+  <section class="tab-content" id="windows" data-platform="Windows" role="tabpanel">
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <h3>Ouvrir les réseaux Wi-Fi</h3>
+          <p>Cliquez sur l'icône <strong>Wi-Fi</strong> (ou réseau) dans la barre des tâches, en bas à droite de l'écran.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <h3>Sélectionner UUA</h3>
+          <p>Repérez <strong>UUA</strong> dans la liste, cliquez dessus, puis cliquez sur <strong>Se connecter</strong>.</p>
+          <div class="visual-aid">
+            <div class="wifi-list">
+              <div class="wifi-list-item">
+                <span class="item-icon">📶</span> Bureau_RDC
+                <span class="lock">🔒</span>
+              </div>
+              <div class="wifi-list-item highlight">
+                <span class="item-icon">📶</span> UUA
+                <span class="lock">🔒</span>
+              </div>
+              <div class="wifi-list-item">
+                <span class="item-icon">📶</span> VISITEUR
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <h3>Entrer vos identifiants</h3>
+          <p>Saisissez votre <strong>identifiant</strong> et votre <strong>mot de passe</strong>, puis cliquez sur <strong>OK</strong>.</p>
+          <div class="visual-aid">
+            <div class="form-mock">
+              <label>Nom d'utilisateur</label>
+              <div class="field filled">jean.dupont</div>
+              <label>Mot de passe</label>
+              <div class="field filled">••••••••</div>
+              <div class="btn-mock">OK</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <h3>Accepter le certificat (si demandé)</h3>
+          <p>Si une fenêtre demande de vérifier le certificat du serveur, cliquez sur <strong>Connecter</strong>. C'est le certificat de l'université.</p>
+          <div class="visual-aid">
+            <div class="cert-dialog">
+              <div class="cert-icon">🔐</div>
+              <div class="cert-title">Vérification du serveur</div>
+              <div class="cert-text">Voulez-vous vous connecter au réseau UUA ?</div>
+              <div class="cert-actions">
+                <span class="cert-btn secondary">Annuler</span>
+                <span class="cert-btn primary">Connecter</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">✓</div>
+        <div class="step-body">
+          <h3>Connecté !</h3>
+          <p>L'icône Wi-Fi dans la barre des tâches affiche la connexion active.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ macOS ═══ -->
+  <section class="tab-content" id="mac" data-platform="Mac" role="tabpanel">
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <h3>Ouvrir le menu Wi-Fi</h3>
+          <p>Cliquez sur l'icône <strong>Wi-Fi</strong> dans la barre de menus, en haut à droite de l'écran.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <h3>Sélectionner UUA</h3>
+          <p>Cliquez sur <strong>UUA</strong> dans la liste des réseaux.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <h3>Entrer vos identifiants</h3>
+          <p>Dans la fenêtre qui s'ouvre, renseignez votre <strong>identifiant</strong> et votre <strong>mot de passe</strong>, puis cliquez sur <strong>Rejoindre</strong>.</p>
+          <div class="visual-aid">
+            <div class="form-mock">
+              <label>Nom d'utilisateur</label>
+              <div class="field filled">jean.dupont</div>
+              <label>Mot de passe</label>
+              <div class="field filled">••••••••</div>
+              <div class="btn-mock">Rejoindre</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <h3>Accepter le certificat</h3>
+          <p>macOS affiche le certificat du serveur. Cliquez sur <strong>Continuer</strong> pour valider.</p>
+          <div class="callout info">
+            <span class="callout-icon">ℹ️</span>
+            <span>Votre Mac peut demander le mot de passe de votre session pour enregistrer le certificat dans le trousseau.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">✓</div>
+        <div class="step-body">
+          <h3>Connecté !</h3>
+          <p>L'icône Wi-Fi passe en plein dans la barre de menus. Votre Mac se reconnectera automatiquement.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ Troubleshooting ═══ -->
+  <section class="troubleshooting">
+    <h2>En cas de problème</h2>
+
+    <div class="faq-item">
+      <button class="faq-q" aria-expanded="false">
+        « Impossible de se connecter au réseau »
+        <span class="faq-icon">▸</span>
+      </button>
+      <div class="faq-a">
+        <ul>
+          <li>Vérifiez votre identifiant et mot de passe — attention aux majuscules.</li>
+          <li>« Oubliez » le réseau UUA dans vos paramètres Wi-Fi, puis reconnectez-vous depuis le début.</li>
+          <li>Sur Android, vérifiez que <strong>PEAP</strong> et <strong>MSCHAPV2</strong> sont bien sélectionnés.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" aria-expanded="false">
+        « Limite d'appareils atteinte »
+        <span class="faq-icon">▸</span>
+      </button>
+      <div class="faq-a">
+        <p>Chaque compte a un nombre limité d'appareils connectés simultanément. Déconnectez le Wi-Fi sur un autre appareil avant de réessayer.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" aria-expanded="false">
+        Wi-Fi connecté mais pas d'accès internet
+        <span class="faq-icon">▸</span>
+      </button>
+      <div class="faq-a">
+        <ul>
+          <li>Désactivez puis réactivez le Wi-Fi.</li>
+          <li>Redémarrez votre appareil.</li>
+          <li>Si le problème persiste, contactez le service informatique.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" aria-expanded="false">
+        Le réseau UUA n'apparaît pas
+        <span class="faq-icon">▸</span>
+      </button>
+      <div class="faq-a">
+        <ul>
+          <li>Vérifiez que le Wi-Fi est activé sur votre appareil.</li>
+          <li>Rapprochez-vous d'un bâtiment couvert par le réseau.</li>
+          <li>Rafraîchissez la liste des réseaux (tirez vers le bas sur mobile).</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <p>Université — Service informatique</p>
+  </footer>
+
+</div>
+
+<script>
+  // Tab switching
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tab-btn').forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      btn.classList.add('active');
+      btn.setAttribute('aria-selected', 'true');
+      document.getElementById(btn.dataset.tab).classList.add('active');
+    });
+  });
+
+  // FAQ accordion
+  document.querySelectorAll('.faq-q').forEach(q => {
+    q.addEventListener('click', () => {
+      const item = q.closest('.faq-item');
+      const wasOpen = item.classList.contains('open');
+      // Close all
+      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+      document.querySelectorAll('.faq-q').forEach(b => b.setAttribute('aria-expanded', 'false'));
+      // Toggle current
+      if (!wasOpen) {
+        item.classList.add('open');
+        q.setAttribute('aria-expanded', 'true');
+      }
+    });
+  });
+</script>
