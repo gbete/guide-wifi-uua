@@ -1157,6 +1157,7 @@
             : '<br>⚠️ L\'e-mail n\'a pas pu être envoyé. Notez bien vos identifiants.';
 
         res.className = 'act-result ok';
+        res.style.display = 'block';
         res.innerHTML =
           '<strong>' + (d.already ? 'ℹ️ Ce compte est déjà activé.' : '✅ Compte activé avec succès !') + '</strong>' +
           '<div class="act-creds">' +
@@ -1172,10 +1173,12 @@
           '</p>';
       } else {
         res.className = 'act-result err';
+        res.style.display = 'block';
         res.innerHTML = '<strong>' + d.error + '</strong>';
       }
     } catch (ex) {
       res.className = 'act-result err';
+      res.style.display = 'block';
       res.innerHTML = '<strong>Erreur de connexion. Vérifiez votre accès Internet et réessayez.</strong>';
     }
 
