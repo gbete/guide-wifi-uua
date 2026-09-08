@@ -803,6 +803,24 @@
 
   <!-- ═══ Android ═══ -->
   <section class="tab-content" id="android" data-platform="Android" role="tabpanel">
+
+    <!-- ── Encart certificat CA ── -->
+    <div class="callout warn" style="margin-bottom:1.5rem; flex-direction:column; gap:0.5rem; padding:1rem 1.1rem;">
+      <div style="display:flex; align-items:center; gap:0.5rem;">
+        <span class="callout-icon">🔐</span>
+        <strong style="font-size:0.95rem;">Votre téléphone exige un certificat ?</strong>
+      </div>
+      <p style="margin:0; font-size:0.88rem; line-height:1.5;">
+        Certains téléphones Android (Redmi, Samsung, Tecno…) <strong>refusent de se connecter</strong> sans installer le certificat de sécurité de l'université. Si le bouton « Se connecter » reste grisé ou que la connexion échoue, <strong>installez d'abord le certificat</strong> :
+      </p>
+      <div style="display:flex; flex-wrap:wrap; gap:0.5rem; margin-top:0.25rem;">
+        <a href="UUA-RADIUS-CA.crt" style="display:inline-flex; align-items:center; gap:0.4rem; padding:0.5rem 1rem; background:var(--accent); color:var(--accent-on); border-radius:6px; font-size:0.88rem; font-weight:600; text-decoration:none;">📥 Télécharger le certificat</a>
+      </div>
+      <p style="margin:0.4rem 0 0; font-size:0.82rem; color:var(--text-3); line-height:1.5;">
+        Après le téléchargement, Android vous proposera de l'installer. Choisissez <strong>« Certificat CA »</strong> ou <strong>« Certificat Wi-Fi »</strong>, puis confirmez. Ensuite, revenez ici pour configurer la connexion.
+      </p>
+    </div>
+
     <div class="steps">
       <div class="step">
         <div class="step-num">1</div>
@@ -844,14 +862,16 @@
             <table class="config-table">
               <tr><td>Méthode EAP</td><td>PEAP</td></tr>
               <tr><td>Phase 2</td><td>MSCHAPV2</td></tr>
-              <tr><td>Certificat CA</td><td>Ne pas valider</td></tr>
+              <tr><td>Certificat CA</td><td style="display:flex;flex-direction:column;gap:0.2rem;"><span>Ne pas valider</span><span style="font-family:var(--font-body);font-size:0.78rem;color:var(--text-3);">ou <strong>UUA RADIUS Root CA</strong> si vous avez installé le certificat</span></td></tr>
+              <tr><td>Domaine</td><td>radius.uua.local</td></tr>
               <tr><td>Identité</td><td>votre identifiant (ex : dt4020)</td></tr>
+              <tr><td>Identité anonyme</td><td style="color:var(--text-3);font-style:italic;">laisser vide</td></tr>
               <tr><td>Mot de passe</td><td>votre mot de passe</td></tr>
             </table>
           </div>
-          <div class="callout warn">
-            <span class="callout-icon">⚠️</span>
-            <span>Laissez le champ <strong>Identité anonyme</strong> et <strong>Domaine</strong> vides. Ne changez pas les autres paramètres.</span>
+          <div class="callout info">
+            <span class="callout-icon">ℹ️</span>
+            <span>Le champ <strong>Domaine</strong> est obligatoire sur la plupart des téléphones récents. Tapez exactement : <code style="font-family:var(--font-mono);font-weight:700;background:var(--accent-soft);padding:0.1rem 0.3rem;border-radius:3px;">radius.uua.local</code></span>
           </div>
         </div>
       </div>
@@ -861,6 +881,10 @@
         <div class="step-body">
           <h3>Se connecter</h3>
           <p>Appuyez sur <strong>Se connecter</strong>. Si un avertissement sur le certificat CA apparaît, confirmez.</p>
+          <div class="callout warn">
+            <span class="callout-icon">⚠️</span>
+            <span><strong>Bouton grisé ?</strong> Vérifiez que le champ <strong>Domaine</strong> est bien rempli. Si le problème persiste, installez le certificat (bouton ci-dessus) et choisissez <strong>UUA RADIUS Root CA</strong> au lieu de « Ne pas valider ».</span>
+          </div>
         </div>
       </div>
 
@@ -1026,6 +1050,37 @@
           <li>Vérifiez votre identifiant et mot de passe — attention aux majuscules.</li>
           <li>« Oubliez » le réseau UUA dans vos paramètres Wi-Fi, puis reconnectez-vous depuis le début.</li>
           <li>Sur Android, vérifiez que <strong>PEAP</strong> et <strong>MSCHAPV2</strong> sont bien sélectionnés.</li>
+          <li>Remplissez le champ <strong>Domaine</strong> avec <code style="font-family:var(--font-mono);font-weight:700;">radius.uua.local</code></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" aria-expanded="false">
+        Le bouton « Se connecter » est grisé (Android)
+        <span class="faq-icon">▸</span>
+      </button>
+      <div class="faq-a">
+        <p>Sur Android 11 et plus, le bouton reste grisé si le champ <strong>Domaine</strong> est vide.</p>
+        <ul>
+          <li>Remplissez le champ <strong>Domaine</strong> avec : <code style="font-family:var(--font-mono);font-weight:700;">radius.uua.local</code></li>
+          <li>Si le bouton reste grisé, <a href="UUA-RADIUS-CA.crt" style="color:var(--accent);font-weight:600;">installez le certificat de l'université</a>, puis choisissez <strong>UUA RADIUS Root CA</strong> dans le champ « Certificat CA » au lieu de « Ne pas valider ».</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" aria-expanded="false">
+        Échec de connexion avec « certificat inconnu » (Android)
+        <span class="faq-icon">▸</span>
+      </button>
+      <div class="faq-a">
+        <p>Certains téléphones (Redmi, Samsung, Tecno…) exigent le certificat de sécurité de l'université pour se connecter.</p>
+        <ul>
+          <li><a href="UUA-RADIUS-CA.crt" style="color:var(--accent);font-weight:600;">📥 Téléchargez le certificat ici</a></li>
+          <li>Installez-le : <strong>Paramètres → Sécurité → Installer un certificat → Certificat CA</strong></li>
+          <li>Reconnectez-vous au réseau UUA en choisissant <strong>UUA RADIUS Root CA</strong> dans le champ « Certificat CA »</li>
+          <li>Renseignez le <strong>Domaine</strong> : <code style="font-family:var(--font-mono);font-weight:700;">radius.uua.local</code></li>
         </ul>
       </div>
     </div>
